@@ -115,3 +115,22 @@ func (es *ExpressionStatement) String() string {
 	}
 	return ""
 }
+
+type PrefixExpression struct {
+	Token    token.Token
+	Operator string
+	Right    Expression
+}
+
+func (pe *PrefixExpression) expressionNode()      {}
+func (pe *PrefixExpression) TokenLiteral() string { return pe.Token.Literal }
+func (pe *PrefixExpression) String() string {
+	var out string
+
+	out += "("
+	out += pe.Operator
+	out += pe.Right.String()
+	out += ")"
+
+	return out
+}
