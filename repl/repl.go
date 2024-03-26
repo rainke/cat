@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"cat/evaluator"
 	"cat/lexer"
+	"cat/object"
 	"cat/parser"
 	"fmt"
 	"io"
@@ -22,6 +23,7 @@ const CatLogo = `
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Fprint(out, PROMPT)
@@ -39,7 +41,7 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		evaluated := evaluator.Eval(program)
+		evaluated := evaluator.Eval(program, env)
 
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
