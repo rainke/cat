@@ -228,7 +228,9 @@ func (fl *FunctionLiteral) String() string {
 	out += "("
 	out += strings.Join(params, ", ")
 	out += ")"
+	out += "{\n"
 	out += fl.Body.String()
+	out += "\n}"
 
 	return out
 }
