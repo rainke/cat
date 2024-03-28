@@ -1,6 +1,10 @@
 package object
 
-import "fmt"
+import (
+	"cat/ast"
+	"fmt"
+	"strings"
+)
 
 const (
 	INTEGER_OBJ      = "INTEGER"
@@ -8,6 +12,7 @@ const (
 	NULL_OBJ         = "NULL"
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
 	ERROR_OBJ        = "ERROR"
+	FUNCTION_OBJ     = "FUNCTION"
 )
 
 type ObjectType string
@@ -68,4 +73,19 @@ func (e *Environment) Get(name string) (Object, bool) {
 func (e *Environment) Set(name string, val Object) Object {
 	e.store[name] = val
 	return val
+}
+
+type Function struct {
+	Parameters []*ast.Identifier
+	Body       *ast.BlockStatement
+	Env        *Environment
+}
+
+func (f *Function) Type() ObjectType { return FUNCTION_OBJ }
+func (f *Function) Inspect() string {
+	params := []string{}
+	for _, p := range f.Parameters {
+		params = append(params, p.String())
+	}
+	return fmt.Sprintf("fn(%s) {\n %s \n}", strings.Join(params, ", "), f.Body)
 }
