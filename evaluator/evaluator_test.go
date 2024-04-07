@@ -7,6 +7,36 @@ import (
 	"testing"
 )
 
+// evaluator/evaluator_test.go
+
+func TestStringConcatenation(t *testing.T) {
+	input := `"Hello" + " " + "World!"`
+
+	evaluated := testEval(input)
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "Hello World!" {
+		t.Errorf("String has wrong value. got=%q", str.Value)
+	}
+}
+
+func TestStringLiteral(t *testing.T) {
+	input := `"Hello World!"`
+
+	evaluated := testEval(input)
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "Hello World!" {
+		t.Errorf("String has wrong value. got=%q", str.Value)
+	}
+}
+
 func TestFunctionApplication(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -75,7 +105,7 @@ func TestErrorHandling(t *testing.T) {
 		{"if (10 > 1) { true + false; }", "unknown operator: BOOL + BOOL"},
 		{"if (10 > 1) { if (10 > 1) { return true + false; } return 1; }", "unknown operator: BOOL + BOOL"},
 		{"foobar", "identifier not found: foobar"},
-		// {"\"Hello\" - \"World\"", "unknown operator: STRING - STRING"},
+		{"\"Hello\" - \"World\"", "unknown operator: STRING - STRING"},
 		// {"{\"name\": \"Monkey\"}[fn(x) { x }];", "unusable as hash key: FUNCTION"},
 	}
 
