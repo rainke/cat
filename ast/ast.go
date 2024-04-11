@@ -267,3 +267,25 @@ func (ce *CallExpression) String() string {
 
 	return out
 }
+
+type ArrayLiteral struct {
+	Token    token.Token // the '[' token
+	Elements []Expression
+}
+
+func (al *ArrayLiteral) expressionNode()      {}
+func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
+func (al *ArrayLiteral) String() string {
+	var out string
+
+	elements := []string{}
+	for _, el := range al.Elements {
+		elements = append(elements, el.String())
+	}
+
+	out += "["
+	out += strings.Join(elements, ", ")
+	out += "]"
+
+	return out
+}
