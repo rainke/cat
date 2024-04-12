@@ -7,6 +7,25 @@ import (
 	"testing"
 )
 
+func TestParsingIndexExpression(t *testing.T) {
+	input := "myArray[1 + 2]"
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	indexExpr, ok := stmt.Expression.(*ast.IndexExpression)
+	if !ok {
+		t.Fatalf("exp not *ast.IndexExpression. got=%T", stmt.Expression)
+	}
+	if !testIdentifier(t, indexExpr.Left, "myArray") {
+		return
+	}
+	if !testInfixExpression(t, indexExpr.Index, 1, "+", 2) {
+		return
+	}
+}
+
 func TestParsingArrayLiterals(t *testing.T) {
 	input := "[1, 2 * 2, 3 + 3]"
 	l := lexer.New(input)
