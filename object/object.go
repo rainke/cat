@@ -17,7 +17,7 @@ const (
 	STRING_OBJ       = "STRING"
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
-	HashObj          = "HASH"
+	HASH_OBJ         = "HASH"
 )
 
 type ObjectType string
@@ -169,7 +169,7 @@ type Hashable interface {
 	HashKey() HashKey
 }
 
-func (h *Hash) Type() ObjectType { return HashObj }
+func (h *Hash) Type() ObjectType { return HASH_OBJ }
 func (h *Hash) Inspect() string {
 	var out strings.Builder
 	pairs := []string{}
